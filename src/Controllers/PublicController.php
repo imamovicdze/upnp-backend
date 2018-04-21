@@ -9,7 +9,11 @@
 namespace Upnp\Controllers;
 
 use Upnp\Services\PublicService;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Upnp\Application;
 
 class PublicController
 {
@@ -24,6 +28,18 @@ class PublicController
     {
         $this->twig = $twig;
         $this->publicService = $publicService;
+    }
+
+    public function sendMail(Application $app, Request $request){
+        $clientName = $request->request->get('name');
+        $clientMail = $request->request->get('senderEmail');
+        $phoneNumber = $request->request->get('phoneNumber');
+        $companyName = $request->request->get('companyName');
+        $title = $request->request->get('title');
+        $content = $request->request->get('content');
+
+        $isSent = $this->publicService->sendMail($clientName, $clientMail, $phoneNumber, $companyName, $title, $content);
+        return new Response($isSent);
     }
 
     public function getNews()

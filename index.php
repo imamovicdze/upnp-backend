@@ -75,6 +75,7 @@ $app->post('/image/delete/{id}',                [$mainController, "deleteImage"]
 
 $app->get('/api/news',                              [$publicController, "getNews"]);
 $app->get('/api/albums',                            [$publicController, "getAlbums"]);
+$app->post('/mail',                                 [$publicController, "sendMail"]);
 
 $app->get('',[$publicController, "landing"]);
 $app->get('/',[$publicController, "landing"]);

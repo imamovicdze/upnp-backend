@@ -331,7 +331,7 @@ class MainController
         $password = $request->request->get('password');
         if (password_verify($password, $user->password)) {
             $_SESSION['user'] = $user->toArray();
-            return new RedirectResponse('');
+            return new RedirectResponse('/news');
         }
         return new RedirectResponse('/login?continue=failed');
     }

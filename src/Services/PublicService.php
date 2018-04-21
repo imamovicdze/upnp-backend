@@ -37,4 +37,14 @@ class PublicService
             die();
         }
     }
+
+    public function sendMail($clientName, $clientMail, $phoneNumber = null, $companyName = null, $title, $content)
+    {
+        // configure PHPMailer
+
+        if(!$isSent) {
+            return false;
+        }
+        return true;
+    }
 }
