@@ -21,7 +21,7 @@ $app = new Application($_SERVER['HOME']);
 $publicController = new PublicController( $app['twig'],$app['publicService']);
 
 
-$mainController = new MainController($app['newsService'], $app['userService'], $app['volountieerService'], $app['imgur'], $app['twig'], $app['validationLibrary'], $app['albumService'],$app['imageService']);
+$mainController = new MainController($app['newsService'], $app['userService'], $app['volountieerService'], $app['imgur'], $app['twig'], $app['validationLibrary'], $app['albumService'], $app['imageService']);
 $middleware = $app['middleware'];
 
 /** @var RouteCollection $newsRouteCollection */
@@ -75,6 +75,7 @@ $app->post('/image/delete/{id}',                [$mainController, "deleteImage"]
 
 $app->get('/api/news',                              [$publicController, "getNews"]);
 $app->get('/api/albums',                            [$publicController, "getAlbums"]);
+$app->post('/mail',                                 [$publicController, "sendMail"]);
 
 $app->get('',[$publicController, "landing"]);
 $app->get('/',[$publicController, "landing"]);
