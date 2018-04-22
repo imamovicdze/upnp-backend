@@ -2,6 +2,7 @@
 
 namespace Upnp\Services;
 
+use Upnp\EntityModels\ImageEntityModel;
 use Upnp\Models\News;
 use Upnp\EntityModels\NewsEntityModel;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -27,6 +28,18 @@ class NewsService
         } catch (Exception $e) {
             var_dump($e->getMessage());
             die();
+        }
+    }
+
+    public function updateNewsImage($entityModel, $id)
+    {
+        try {
+            $news = News::find($id)->update([
+                "image_id" => $entityModel->id
+            ]);
+            return (int)$news->id;
+        } catch (Exception $e) {
+            var_dump($e->getMessage());die();
         }
     }
 
@@ -74,7 +87,6 @@ class NewsService
     {
         try {
             $news = News::get_news_with_id($id);
-//            var_dump($news);die();
 
             return $news->toArray();
         } catch (Exception $e) {

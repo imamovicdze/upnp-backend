@@ -52,23 +52,16 @@ class MainController
         $this->imageService = $imageService;
     }
 
-    /* public function news()
-     {
-         $deletemessage = $request->query->get("deletemessage");
-         $news = $this->newsService->readNews();
-         if (!empty($deletemessage)) {
-             return $this->twig->render('/news-list/news-list.html.twig', ['news' => $news, 'deletemessage' => $deletemessage]);
-         }
-         return $this->twig->render('/news-list/news-list.html.twig', ['news' => $news]);
-     }*/
     public function news(Request $request)
     {
         $news = $this->newsService->readNews();
+        $newsEng = $this->filterLanguage($news, "english");
+        $newsSrb = $this->filterLanguage($news, "serbian");
         $deletemessage = $request->query->get("deletemessage");
         if (!empty($deletemessage)) {
-            return $this->twig->render('/news-list/news-list.html.twig', ['news' => $news, 'deletemessage' => $deletemessage]);
+            return $this->twig->render('/news-list/news-list.html.twig', ['newsEn' => $newsEng, 'newsSrb' => $newsSrb, 'deletemessage' => $deletemessage]);
         }
-        return $this->twig->render('/news-list/news-list.html.twig', ['news' => $news]);
+        return $this->twig->render('/news-list/news-list.html.twig', ['newsEn' => $newsEng, 'newsSrb' => $newsSrb]);
     }
 
     public function create()
@@ -93,10 +86,24 @@ class MainController
         return $this->twig->render('/login/login.html');
     }
 
+    public function changeNewsImage(Request $request, $id){
+        $image = $request->files->get("image");
+
+        if (!empty($image)) {
+            /** @var ImageEntityModel $imageObj */
+            $imageObj = $this->imgurClient->uploadImage($image);
+            $imageSavedEntity = $this->imageService->createImage($imageObj);
+
+            $successfull = $this->newsService->updateNewsImage($imageSavedEntity, $id);
+            return new RedirectResponse('/news/' . $id . '?message=Vest je uspesno kreirana!');
+        } else {
+            return new JsonResponse('image not uploaded', JsonResponse::HTTP_EXPECTATION_FAILED);
+        }
+    }
+
     public function createNews(Request $request)
     {
         $isValid = $this->validationLibrary->newsRules($request);
-//        var_dump($isValid);die();
         if ($isValid->validate()) {
 
             $image = $request->files->get("image");
@@ -166,7 +173,6 @@ class MainController
     public function CreateVolountieer(Request $request)
     {
         $isValid = $this->validationLibrary->volountieerRules($request);
-        return new JsonResponse(3, 201);
         if ($isValid->validate()) {
             $volountieer = $this->extractVolountieer($request);
             $successfull = $this->volountieerService->createVolountieer($volountieer);
@@ -194,7 +200,11 @@ class MainController
     public function deleteAlbumImage(Request $request, $id)
     {
         // if message if fails
-        $album = $this->albumService->deleteAlbumImage($id);
+//        var_dump($id);die();
+        $succesful = $this->imageService->deleteAlbumImage($id);
+
+        return new RedirectResponse("/album/info/" . $succesful);
+
     }
 
     public function uploadImageToAlbum(Request $request, $id)
@@ -209,6 +219,18 @@ class MainController
         }
         return new RedirectResponse("/album/edit/" . $id);
     }
+
+    public function getAllVolunteer(){
+        $volunteers = $this->volountieerService->getValountieers();
+        return $this->twig->render("/volountieer-list/volountieer-list.html.twig", ['volountieers' => $volunteers]);
+    }
+
+
+    public function getVolunteer($id){
+        $volunteer = $this->volountieerService->getValountieer($id);
+        return $this->twig->render("/volountieer-form-info/volountieer-form-info.html.twig", ['volonter' => $volunteer]);
+    }
+
 
 
     //List All Albums
@@ -380,5 +402,15 @@ class MainController
 //            return new RedirectResponse('/news/'.$newsId);
 //        }
 //        return
+    }
+
+    protected function filterLanguage($array, $lang){
+        $container  = [];
+        foreach($array as $el){
+            if($el['language'] == $lang){
+                $container[] = $el;
+            }
+        }
+        return $container;
     }
 }
