@@ -140,6 +140,7 @@ class PublicController
     public function getSingleNewsEn($id)
     {
         $news = $this->publicService->NewsById($id);
+        var_dump($news);
         $newsSuggestions = $this->publicService->getThreeNewsSuggestions('english');
         return $this->twig->render('/en-single-news/en-single-news.html.twig', ['news' => $news, 'suggestions' => $newsSuggestions]);
     }

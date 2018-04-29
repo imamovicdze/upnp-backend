@@ -4,6 +4,7 @@ namespace Upnp\Controllers;
 
 use Upnp\Application;
 use Upnp\Clients\ImgurClient;
+use Upnp\EntityModels\ResponseMessages;
 use Upnp\Models\Album;
 use Upnp\Models\Image;
 use Upnp\Services\AlbumService;
@@ -79,7 +80,6 @@ class MainController
     {
 //        var_dump("heee");die();
         $isRedirected = $request->query->get("continue");
-
 //        if (!empty($isRedirected)) {
 //            return $this->twig->render('/news-list/news-list.html', ['message' => true]);
 //        }
@@ -119,7 +119,7 @@ class MainController
 //            var_dump($news);die();
             $successfull = $this->newsService->createNews($news);
 //            var_dump($successfull);die();
-            return new RedirectResponse('/news/' . $successfull . '?message=Vest je uspesno kreirana!');
+            return new RedirectResponse('/news/' . $successfull . '?message=' . ResponseMessages::NEWS_SUCCESSFULLY_CREATED);
 //            return $this->twig->render('admin/info.twig', ['message' => $successfull]);
         }
         $errors = $isValid->errors();
@@ -145,7 +145,7 @@ class MainController
         $newsModel = $this->extractNews($request);
         $newsEdited = $this->newsService->updateNews($newsModel, $id);
 
-        return new RedirectResponse("/news/" . $id . '?updatemessage=Vest je uspesno izmenjena');
+        return new RedirectResponse("/news/" . $id . '?updatemessage=Vest je uspesno izmenjena!');
     }
 
     public function deleteNews(Request $request, $id)
@@ -153,7 +153,8 @@ class MainController
         // if Succesful return message
 //        var_dump($id);die();
         $successfull = $this->newsService->deleteNews($id);
-        return new RedirectResponse('/news?deletemessage=Vest je uspesno izbrisana!');
+        $responseMessage = $successfull ? ResponseMessages::NEWS_SUCCESSFULLY_DELETED : ResponseMessages::NEWS_FAILEDTO_DELETE;
+        return new RedirectResponse('/news?deletemessage=' . ResponseMessages::NEWS_SUCCESSFULLY_DELETED);
     }
 
     public function singleNews(Request $request, $id)
@@ -339,13 +340,6 @@ class MainController
         $news = new NewsEntityModel($title, $content, $category, $image_id, $language);
         return $news;
     }
-
-    /*private function extractAlbum(Request $request)
-    {
-        $title = $request->request->get("title");
-        $album = new AlbumEntityModel($title);
-        return $album;
-    }*/
 
     private function extractVolountieer(Request $request)
     {

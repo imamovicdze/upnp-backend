@@ -63,7 +63,7 @@ $albumRouteCollection->get('/create',           [$mainController, 'createAlbum']
 $albumRouteCollection->get('/info/{id}',        [$mainController, 'infoAlbum']);
 $albumRouteCollection->get('/edit/{id}',        [$mainController, 'editAlbum']);
 $albumRouteCollection->get('',                  [$mainController, 'albums']);
-$albumRouteCollection->post('/image/{id}',    [$mainController, 'deleteAlbumImage']);
+$albumRouteCollection->post('/image/{id}',      [$mainController, 'deleteAlbumImage']);
 $albumRouteCollection->post('/update/{id}',     [$mainController, 'updateAlbum']);
 $albumRouteCollection->post('/upload/{id}',     [$mainController, 'uploadImageToAlbum']);
 $albumRouteCollection->post('/delete/{id}',     [$mainController, 'deleteAlbum']);
@@ -74,8 +74,7 @@ $newsRouteCollection->post('/create',           [$mainController, "createNews"])
 $newsRouteCollection->post('/update/{id}',      [$mainController, "updateNews"]);
 $newsRouteCollection->post('/delete/{id}',      [$mainController, "deleteNews"]);
 $newsRouteCollection->post('/image/{id}',       [$mainController, "changeNewsImage"]);
-
-$newsRouteCollection->get('',                  [$mainController, "news"]);
+$newsRouteCollection->get('',                   [$mainController, "news"]);
 $newsRouteCollection->get('/create',            [$mainController, "getCreateNews"]);
 $newsRouteCollection->get('/edit/{id}',         [$mainController, "editNews"]);
 $newsRouteCollection->get('/{id}',              [$mainController, "singleNews"]);
@@ -87,33 +86,32 @@ $app->get('/volountieers',                      [$mainController, "getVolountiee
 
 $app->post('/image/delete/{id}',                [$mainController, "deleteImage"]);
 
-$app->get('/api/news/{lang}',                              [$publicController, "getNews"]);
+$app->get('/api/news/{lang}',                       [$publicController, "getNews"]);
 $app->get('/api/albums',                            [$publicController, "getAlbums"]);
 $app->post('/mail',                                 [$publicController, "sendMail"]);
 
-$app->get('',[$publicController, "landing"]);
-$app->get('/',[$publicController, "landing"]);
-$app->get('/volunteer',[$publicController, "volunteer"]);
-$app->get('/public/news',[$publicController, "news"]);
-$app->get('/public/news/{id}',[$publicController, "getSingleNews"]);
-$app->get('/gallery',[$publicController, "gallery"]);
-$app->get('/contact',[$publicController, "contact"]);
-$app->get('/patreon',[$publicController, "patreon"]);
-$app->get('/aboutus',[$publicController, "aboutus"]);
+$app->get('',                   [$publicController, "landing"]);
+$app->get('/',                  [$publicController, "landing"]);
+$app->get('/volunteer',         [$publicController, "volunteer"]);
+$app->get('/public/news',       [$publicController, "news"]);
+$app->get('/public/news/{id}',  [$publicController, "getSingleNews"]);
+$app->get('/gallery',           [$publicController, "gallery"]);
+$app->get('/contact',           [$publicController, "contact"]);
+$app->get('/patreon',           [$publicController, "patreon"]);
+$app->get('/aboutus',           [$publicController, "aboutus"]);
 
 
-$englishRouteCollection->get('',[$publicController, "landingEn"]);
-$englishRouteCollection->get('/',[$publicController, "landingEn"]);
-$englishRouteCollection->get('/volunteer',[$publicController, "volunteerEn"]);
-$englishRouteCollection->get('/public/news',[$publicController, "newsEn"]);
-$englishRouteCollection->get('/public/news/{id}',[$publicController, "getSingleNewsEn"]);
-$englishRouteCollection->get('/gallery',[$publicController, "galleryEn"]);
-$englishRouteCollection->get('/contact',[$publicController, "contactEn"]);
-$englishRouteCollection->get('/patreon',[$publicController, "patreonEn"]);
-$englishRouteCollection->get('/aboutus',[$publicController, "aboutusEn"]);
+$englishRouteCollection->get('',                    [$publicController, "landingEn"]);
+$englishRouteCollection->get('/',                   [$publicController, "landingEn"]);
+$englishRouteCollection->get('/volunteer',          [$publicController, "volunteerEn"]);
+$englishRouteCollection->get('/public/news',        [$publicController, "newsEn"]);
+$englishRouteCollection->get('/public/news/{id}',   [$publicController, "getSingleNewsEn"]);
+$englishRouteCollection->get('/gallery',            [$publicController, "galleryEn"]);
+$englishRouteCollection->get('/contact',            [$publicController, "contactEn"]);
+$englishRouteCollection->get('/patreon',            [$publicController, "patreonEn"]);
+$englishRouteCollection->get('/aboutus',            [$publicController, "aboutusEn"]);
 
 
-//$app->get('/dashboard',     [$mainController, "dashboard"]);
 $app->get('/logout',                            [$mainController, "logout"]);
 $app->get('/login',                             [$mainController, "login"]);
 $app->post('/login',                            [$mainController, "loginValidate"])->before(
